@@ -12,7 +12,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
       - SPRING_FLYWAY_ENABLED=true
-      - SPRING_FLAYWAY_BASELINE_ON_MIGRATE=true
+      - SPRING_FLYWAY_BASELINE_ON_MIGRATE=true
     depends_on:
       postgres-db:
         condition: service_healthy
