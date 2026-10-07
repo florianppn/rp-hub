@@ -29,3 +29,9 @@ yarn-error.log*
 
 # Windows
 *:Zone.Identifier
+
+# secrets
+.env
+
+# IDEs and editors
+.idea/
