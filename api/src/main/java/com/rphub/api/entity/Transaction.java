@@ -1,7 +1,7 @@
-package com.apihub.api.entity;
+package com.rphub.api.entity;
 
-import com.apihub.api.enums.TypeTransaction;
-import com.apihub.api.enums.CategoryTransation;
+import com.rphub.api.enums.TypeTransaction;
+import com.rphub.api.enums.CategoryTransaction;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.ManyToOne;
@@ -18,31 +18,31 @@ import java.math.BigDecimal;
 public class Transaction extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "source_account_id", updatedable = false)
+    @JoinColumn(name = "source_account_id", updatable = false)
     private BankAccount sourceAccount;
 
     @ManyToOne(fetch= FetchType.LAZY, optional = false)
-    @JoinColumn(name = "target_account_id", updatedable = false)
+    @JoinColumn(name = "target_account_id", updatable = false)
     private BankAccount targetAccount;
 
     @Enumerated(EnumType.STRING)
-    @Column("name = type_transaction", nullable = false, length = 10, updatable = false)
+    @Column(name = "type_transaction", nullable = false, length = 10, updatable = false)
     private TypeTransaction typeTransaction;
 
     @Enumerated(EnumType.STRING)
-    @Column("name = category_transaction", nullable = false, length = 10, updatable = false)
-    private CategoryTransation categoryTransaction;
+    @Column(name = "category_transaction", nullable = false, length = 10, updatable = false)
+    private CategoryTransaction categoryTransaction;
 
     @DecimalMin(value = "0.01")
     @Column(name = "amount", nullable = false, precision = 15, scale = 2, updatable = false)
     private BigDecimal amout;
 
-    private Transaction() {} // pour Hybernate
+    protected Transaction() {} // pour Hybernate
 
     public Transaction(
             BankAccount sourceAccount,
             BigDecimal amout,
-            CategoryTransation categoryTransaction,
+            CategoryTransaction categoryTransaction,
             TypeTransaction typeTransaction,
             BankAccount targetAccount
     ) {
@@ -61,7 +61,7 @@ public class Transaction extends BaseEntity {
         return amout;
     }
 
-    public CategoryTransation getCategoryTransaction() {
+    public CategoryTransaction getCategoryTransaction() {
         return categoryTransaction;
     }
 

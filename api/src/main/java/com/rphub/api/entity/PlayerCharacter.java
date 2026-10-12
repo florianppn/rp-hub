@@ -11,10 +11,10 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
 import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.EventType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import org.hibernate.generator.EventType;
 
 @Entity
 @Table(name = "characters")
@@ -51,7 +51,7 @@ public class PlayerCharacter extends BaseEntity {
     @Generated(event = EventType.INSERT)
     private Boolean hasStaffTools;
 
-    private PlayerCharacter() {} // pour Hybernate
+    protected PlayerCharacter() {} // pour Hybernate
 
     public PlayerCharacter(User user, String firstName, String lastName, LocalDate dateOfBirth, GenderCharacter gender, Integer height) {
         this.user = user;

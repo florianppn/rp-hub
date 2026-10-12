@@ -16,19 +16,19 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Column(name="public_id", insertable = false, updatable = false)
     @Generated(event = EventType.INSERT)
-    private UUID publicId;
+    protected UUID publicId;
 
     @Column(name="created_at", insertable = false, updatable = false)
     @Generated(event = EventType.INSERT)
-    private Instant createdAt;
+    protected Instant createdAt;
 
     @UpdateTimestamp
     @Column(name="updated_at", insertable = false, updatable = false)
-    private Instant updatedAt;
+    protected Instant updatedAt;
 
     public Long getId() {
         return id;

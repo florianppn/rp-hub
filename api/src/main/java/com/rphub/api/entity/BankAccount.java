@@ -35,7 +35,7 @@ public class BankAccount extends BaseEntity {
     @Generated(event = EventType.INSERT)
     private StatusAccount status;
 
-    private BankAccount() {} // pour Hybernate
+    protected BankAccount() {} // pour Hybernate
 
     public BankAccount(PlayerCharacter playerCharacter, String accountNumber) {
         this.playerCharacter = playerCharacter;

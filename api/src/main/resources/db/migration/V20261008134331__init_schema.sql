@@ -22,7 +22,7 @@ CREATE TABLE characters (
     date_of_birth DATE NOT NULL,
     gender VARCHAR(10) NOT NULL CHECK (gender IN ('MALE', 'FEMALE')),
     -- limite arbitraire de taille pour les personnages, entre 140 et 220 cm
-    height SMALLINT NOT NULL CHECK (height >= 140 AND height <= 220),
+    height INT NOT NULL CHECK (height >= 140 AND height <= 220),
     status VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'DECEASED', 'ARCHIVED')),
     has_staff_tools BOOLEAN NOT NULL DEFAULT FALSE,
 
@@ -54,8 +54,9 @@ CREATE TABLE transactions (
     source_account_id BIGINT REFERENCES bank_accounts(id) ON DELETE RESTRICT,
     target_account_id BIGINT REFERENCES bank_accounts(id) ON DELETE RESTRICT,
 
+    public_id UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
     type_transaction VARCHAR(10) NOT NULL CHECK (type_transaction IN ('TRANSFER', 'PAYMENT', 'WITHDRAWAL', 'DEPOSIT')),
-    category VARCHAR(10) NOT NULL CHECK (category IN ('SALARY', 'HOUSING', 'HEALTH', 'GROCERIES', 'VEHICLE', 'LEGAL', 'BUSINESS', 'TAX')),
+    category_transaction VARCHAR(10) NOT NULL CHECK (category_transaction IN ('SALARY', 'HOUSING', 'HEALTH', 'GROCERIES', 'VEHICLE', 'LEGAL', 'BUSINESS', 'TAX')),
     amount NUMERIC(15, 2) NOT NULL CHECK (amount >= 0.00),
 
     CONSTRAINT chk_transaction_accounts CHECK (

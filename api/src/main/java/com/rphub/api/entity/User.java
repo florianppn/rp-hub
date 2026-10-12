@@ -1,7 +1,14 @@
 package com.rphub.api.entity;
 
 import com.rphub.api.enums.Role;
-import jakarta.persitence.Entity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import org.hibernate.annotations.Generated;
+import org.hibernate.generator.EventType;
+import java.time.Instant;
 
 @Entity
 @Table(name = "users")
@@ -20,9 +27,9 @@ public class User extends BaseEntity {
     @Column(name = "deleted_at", updatable = true)
     private Instant deleted_at;
 
-    private User() {} // pour Hybernate
+    protected User() {} // pour Hybernate
 
-    public User(Sring username, String passwordHash) {
+    public User(String username, String passwordHash) {
         this.username = username;
         this.passwordHash = passwordHash;
     }
