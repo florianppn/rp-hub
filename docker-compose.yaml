@@ -2,7 +2,7 @@ services:
   app:
     container_name: api-rp
     build:
-      context: ./api
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
