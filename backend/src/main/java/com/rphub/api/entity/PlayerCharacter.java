@@ -3,33 +3,46 @@ package com.rphub.api.entity;
 import com.rphub.api.enums.GenderCharacter;
 import com.rphub.api.enums.StatusCharacter;
 import java.time.LocalDate;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Max;
-import org.hibernate.annotations.Generated;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.Generated;
 import org.hibernate.generator.EventType;
 
 @Entity
-@Table(name = "characters")
+@Table(
+        name = "characters",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_characters_first_name_last_name",
+                columnNames = {"first_name", "last_name"}
+        )
+)
 public class PlayerCharacter extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "first_name", nullable = false, length = 50)
+    @Size(min = 2, max = 20)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable= false, length = 50)
+    @Size(min = 2, max = 20)
+    @Column(name = "last_name", nullable= false)
     private String lastName;
 
+    @Past
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 

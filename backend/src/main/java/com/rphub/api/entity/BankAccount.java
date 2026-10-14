@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.Generated;
 import org.hibernate.generator.EventType;
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ public class BankAccount extends BaseEntity {
     @JoinColumn(name = "character_id", nullable = false, updatable = false)
     private PlayerCharacter playerCharacter;
 
+    @Pattern(regexp = "^[A-Z0-9]{30}$")
     @Column(name="account_number", unique = true, nullable = false, length = 30, updatable = false)
     private String accountNumber;
 
