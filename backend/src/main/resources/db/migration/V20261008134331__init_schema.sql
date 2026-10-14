@@ -17,14 +17,15 @@ CREATE TABLE characters (
     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
 
     public_id UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    date_of_birth DATE NOT NULL,
+    first_name VARCHAR(20) NOT NULL CHECK (char_length(first_name) >= 2 AND char_length(first_name) <= 20),
+    last_name VARCHAR(20) NOT NULL CHECK (char_length(first_name) >= 2 AND char_length(first_name) <= 20),
+    date_of_birth DATE NOT NULL CHECK (date_of_birth <= CURRENT_DATE - INTERVAL '18 years' AND date_of_birth >= CURRENT_DATE - INTERVAL '100 years'),
     gender VARCHAR(10) NOT NULL CHECK (gender IN ('MALE', 'FEMALE')),
-    -- limite arbitraire de taille pour les personnages, entre 140 et 220 cm
     height INT NOT NULL CHECK (height >= 140 AND height <= 220),
     status VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'DECEASED', 'ARCHIVED')),
     has_staff_tools BOOLEAN NOT NULL DEFAULT FALSE,
+
+    CONSTRAINT uk_characters_first_name_last_name UNIQUE (first_name, last_name),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -38,7 +39,7 @@ CREATE TABLE bank_accounts (
     character_id BIGINT NOT NULL REFERENCES characters(id) ON DELETE RESTRICT,
 
     public_id UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
-    account_number VARCHAR(30) NOT NULL UNIQUE,
+    account_number VARCHAR(30) NOT NULL UNIQUE CHECK (account_number ~ '^[A-Z0-9]{30}$'),
     balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00 CHECK (balance >= 0.00),
     status  VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'FROZEN', 'CLOSED')),
 
