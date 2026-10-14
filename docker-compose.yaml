@@ -12,7 +12,6 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
       - SPRING_FLYWAY_ENABLED=true
-      - SPRING_FLYWAY_BASELINE_ON_MIGRATE=true
     depends_on:
       postgres-db:
         condition: service_healthy
@@ -20,6 +19,8 @@ services:
   postgres-db:
     container_name: postgres-db
     image: postgres:16-alpine
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
