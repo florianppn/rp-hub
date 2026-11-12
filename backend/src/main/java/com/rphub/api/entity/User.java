@@ -16,25 +16,30 @@ public class User extends BaseEntity {
 
     @Column(name = "username", unique = true, nullable = false, length = 25)
     private String username;
+
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
+
+    @Column(name = "email_address", unique=true, nullable=false)
+    private String emailAddress;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", insertable = false)
     @Generated(event = EventType.INSERT)
     private Role role;
 
-    @Column(name = "deleted_at", updatable = true)
+    @Column(name = "deleted_at")
     private Instant deleted_at;
 
     protected User() {} // pour Hybernate
 
-    public User(String username, String passwordHash) {
+    public User(String username, String passwordHash, String emailAddress) {
         this.username = username;
         this.passwordHash = passwordHash;
+        this.emailAddress = emailAddress;
     }
 
-    public Instant getDeleted_at() {
+    public Instant getDeletedAt() {
         return deleted_at;
     }
 
@@ -50,6 +55,10 @@ public class User extends BaseEntity {
         return username;
     }
 
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
     public void setRole(Role role) {
         this.role = role;
     }
@@ -60,6 +69,10 @@ public class User extends BaseEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
 }

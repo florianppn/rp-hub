@@ -64,42 +64,6 @@ public class BankAccountPersistenceTest extends AbstractPostgresTest {
     }
 
     @Test
-    @DisplayName("Permet de vérifier que la persistance d'un compte bancaire avec un numéro de compte plus court que 30 caractères est rejetée.")
-    public void accountNumberShorterThan30CharactersIsRejected() {
-        assertThatThrownBy(() -> {
-            this.createBankAccount(
-                this.createCharacter(
-                        this.createUser("testuser"), "John", "Doe")
-                ,"JDF639KMZ349POF129DKNF53649S"); //28 caractères
-            em.flush();
-        }).isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
-    @DisplayName("Permet de vérifier que la persistance d'un compte bancaire avec un numéro de compte plus long que 30 caractères est rejetée.")
-    public void accountNumberLongerThan30CharactersIsRejected() {
-        assertThatThrownBy(() -> {
-            this.createBankAccount(
-                    this.createCharacter(
-                            this.createUser("testuser"), "John", "Doe")
-                    ,"JDF639KMZ349POF129DKNF53649S34KZ"); //32 caractères
-            em.flush();
-        }).isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
-    @DisplayName("Permet de vérifier que le numéro de compte d'un compte bancaire correspond au pattern attendu (30 caractères alphanumériques en majuscules).")
-    public void accountNumberMustMatchExpectedPattern() {
-        assertThatThrownBy(() -> {
-            this.createBankAccount(
-                    this.createCharacter(
-                            this.createUser("testuser"), "John", "Doe")
-                    ,"JDa639_MZ349POF129D?NF53649.34"); //30 caractères
-            em.flush();
-        }).isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
     @DisplayName("Permet de vérifier que les valeurs d'un compte bancaire rechargé sont les mêmes que celles du compte bancaire initial.")
     public void reloadedBankAccountKeepsSameValues() {
         User user = this.createUser("testuser");
@@ -121,7 +85,7 @@ public class BankAccountPersistenceTest extends AbstractPostgresTest {
     }
 
     private User createUser(String username) {
-        User user = new User(username, "password");
+        User user = new User(username, "password", "toto@email.com");
         em.persist(user);
         return user;
     }

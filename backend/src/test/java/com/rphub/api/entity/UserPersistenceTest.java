@@ -66,7 +66,7 @@ public class UserPersistenceTest extends AbstractPostgresTest {
     }
 
     private User createUser(String username) {
-        User user = new User(username, "password");
+        User user = new User(username, "password", "toto@email.com");
         em.persist(user);
         return user;
     }

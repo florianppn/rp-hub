@@ -1,9 +1,10 @@
 CREATE TABLE users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
-    public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid() UNIQUE,
+    public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     username VARCHAR(25) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
+    email_address VARCHAR(255) NOT NULL UNIQUE,
     role VARCHAR(25) NOT NULL DEFAULT 'PLAYER' CHECK (role IN ('PLAYER', 'MODERATOR', 'ADMIN')),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -16,7 +17,7 @@ CREATE TABLE characters (
 
     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
 
-    public_id UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
+    public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     first_name VARCHAR(20) NOT NULL CHECK (char_length(first_name) >= 2 AND char_length(first_name) <= 20),
     last_name VARCHAR(20) NOT NULL CHECK (char_length(first_name) >= 2 AND char_length(first_name) <= 20),
     date_of_birth DATE NOT NULL CHECK (date_of_birth <= CURRENT_DATE - INTERVAL '18 years' AND date_of_birth >= CURRENT_DATE - INTERVAL '100 years'),
@@ -38,7 +39,7 @@ CREATE TABLE bank_accounts (
 
     character_id BIGINT NOT NULL REFERENCES characters(id) ON DELETE RESTRICT,
 
-    public_id UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
+    public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     account_number VARCHAR(30) NOT NULL UNIQUE CHECK (account_number ~ '^[A-Z0-9]{30}$'),
     balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00 CHECK (balance >= 0.00),
     status  VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'FROZEN', 'CLOSED')),
@@ -55,7 +56,7 @@ CREATE TABLE transactions (
     source_account_id BIGINT REFERENCES bank_accounts(id) ON DELETE RESTRICT,
     target_account_id BIGINT REFERENCES bank_accounts(id) ON DELETE RESTRICT,
 
-    public_id UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
+    public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     type_transaction VARCHAR(10) NOT NULL CHECK (type_transaction IN ('TRANSFER', 'PAYMENT', 'WITHDRAWAL', 'DEPOSIT')),
     category_transaction VARCHAR(10) NOT NULL CHECK (category_transaction IN ('SALARY', 'HOUSING', 'HEALTH', 'GROCERIES', 'VEHICLE', 'LEGAL', 'BUSINESS', 'TAX')),
     amount NUMERIC(15, 2) NOT NULL CHECK (amount >= 0.00),

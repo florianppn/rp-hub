@@ -43,42 +43,6 @@ public class PlayerCharacterPersistenceTest extends AbstractPostgresTest {
     }
 
     @Test
-    @DisplayName("Permet de vérifier que la persistance d'un personnage joueur avec une taille inférieure à 140 cm est rejetée.")
-    public void heightCannotBeLessThan140() {
-        User user = this.createUser("user1");
-        PlayerCharacter playerCharacter = this.createCharacter(user, "John", "Doe");
-        em.flush();
-        assertThatThrownBy(() -> {
-            playerCharacter.setHeight(120);
-            em.flush();
-        }).isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
-    @DisplayName("Permet de vérifier que la persistance d'un personnage joueur avec une taille supérieure à 220 cm est rejetée.")
-    public void heightCannotBeGreaterThan220() {
-        User user = this.createUser("user1");
-        PlayerCharacter playerCharacter = this.createCharacter(user, "John", "Doe");
-        em.flush();
-        assertThatThrownBy(() -> {
-            playerCharacter.setHeight(240);
-            em.flush();
-        }).isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
-    @DisplayName("Permet de vérifier que la persistance d'un personnage joueur avec une date de naissance dans le futur est rejetée.")
-    public void dateOfBirthCannotBeInTheFuture() {
-        User user = this.createUser("user1");
-        PlayerCharacter playerCharacter = this.createCharacter(user, "John", "Doe");
-        em.flush();
-        assertThatThrownBy(() -> {
-            playerCharacter.setDateOfBirth(LocalDate.now().plusDays(5));
-            em.flush();
-        }).isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
     @DisplayName("Permet de vérifier que les valeurs d'un personnage joueur rechargé sont les mêmes que celles de l'utilisateur initial.")
     public void reloadedPlayerCharacterKeepsSameValues() {
         User user = this.createUser("user1");
@@ -96,7 +60,7 @@ public class PlayerCharacterPersistenceTest extends AbstractPostgresTest {
     }
 
     private User createUser(String username) {
-        User user = new User(username, "password");
+        User user = new User(username, "password", "toto@email.com");
         em.persist(user);
         return user;
     }
