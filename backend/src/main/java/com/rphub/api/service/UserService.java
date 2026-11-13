@@ -56,7 +56,7 @@ public class UserService {
         }
         User user = userMapper.toEntity(request);
         user.setPasswordHash(passwordEncoder.encode(request.password()));
-        userRepository.saveAndFlush(user);
+        userRepository.save(user);
         return userMapper.toResponse(user);
     }
 
@@ -69,8 +69,10 @@ public class UserService {
     public void updatePassword(UUID publicId, PasswordUpdateRequest request) {
         User user = userRepository.findByPublicId(publicId)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + publicId));
+        if(!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
+            throw new ConflictException("Mot de passe incorrect");
+        }
         user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
-        userRepository.saveAndFlush(user);
     }
 
     @Transactional

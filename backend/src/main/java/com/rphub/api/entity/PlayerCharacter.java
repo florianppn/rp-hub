@@ -13,10 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Generated;
 import org.hibernate.generator.EventType;
 
@@ -34,15 +30,12 @@ public class PlayerCharacter extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Size(min = 2, max = 20)
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Size(min = 2, max = 20)
-    @Column(name = "last_name", nullable= false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Past
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
@@ -50,8 +43,6 @@ public class PlayerCharacter extends BaseEntity {
     @Column(name = "gender", nullable = false)
     private GenderCharacter gender;
 
-    @Min(140)
-    @Max(220)
     @Column(name = "height", nullable = false)
     private Integer height;
 
