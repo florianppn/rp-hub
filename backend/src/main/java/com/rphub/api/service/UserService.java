@@ -79,6 +79,9 @@ public class UserService {
     public UserResponse updateEmailAddress(UUID publicId, EmailUpdateRequest request) {
         User user = userRepository.findByPublicId(publicId)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + publicId));
+        if(!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
+            throw new ConflictException("Mot de passe incorrect");
+        }
         user.setEmailAddress(request.newEmailAddress());
         return userMapper.toResponse(user);
     }
