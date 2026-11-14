@@ -8,6 +8,7 @@ import com.rphub.api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,31 +32,26 @@ public class UserController {
     }
 
     @GetMapping("/{publicId}")
-    public ResponseEntity<UserResponse> get(@PathVariable UUID publicId) {
-        UserResponse response = userService.read(publicId);
-        return ResponseEntity.ok(response);
+    public UserResponse get(@PathVariable UUID publicId) {
+        return userService.read(publicId);
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> post(
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponse post(
         @Valid @RequestBody UserCreateRequest request
     ) {
-        UserResponse response = userService.create(request);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response.publicId())
-                .toUri();
-        return ResponseEntity.created(location).body(response);
+        return userService.create(request);
     }
 
     @DeleteMapping("/{publicId}")
-    public ResponseEntity<Void> delete(@PathVariable UUID publicId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID publicId) {
         userService.delete(publicId);
-        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{publicId}/password")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> patchPassword(
         @PathVariable UUID publicId,
         @Valid @RequestBody PasswordUpdateRequest request

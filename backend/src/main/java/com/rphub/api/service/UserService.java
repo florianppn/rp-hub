@@ -56,13 +56,15 @@ public class UserService {
         }
         User user = userMapper.toEntity(request);
         user.setPasswordHash(passwordEncoder.encode(request.password()));
-        userRepository.save(user);
-        return userMapper.toResponse(user);
+        User save = userRepository.save(user);
+        return userMapper.toResponse(save);
     }
 
     @Transactional
     public void delete(UUID publicId) {
-        userRepository.deleteByPublicId(publicId);
+        if (userRepository.deleteByPublicId(publicId) == 0) {
+            throw new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + publicId);
+        }
     }
 
     @Transactional
