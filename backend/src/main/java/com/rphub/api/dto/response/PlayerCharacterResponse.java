@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public record PlayerCharacterResponse(
         UUID publicId,
-        String username,
+        String firstName,
         String lastName,
         LocalDate dateOfBirth,
         GenderCharacter gender,

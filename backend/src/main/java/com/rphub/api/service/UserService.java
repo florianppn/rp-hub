@@ -56,8 +56,7 @@ public class UserService {
         }
         User user = userMapper.toEntity(request);
         user.setPasswordHash(passwordEncoder.encode(request.password()));
-        User save = userRepository.save(user);
-        return userMapper.toResponse(save);
+        return userMapper.toResponse(userRepository.save(user));
     }
 
     @Transactional
