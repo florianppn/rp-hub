@@ -23,14 +23,12 @@ public class BankAccount extends BaseEntity {
     @JoinColumn(name = "character_id", nullable = false, updatable = false)
     private PlayerCharacter playerCharacter;
 
-    @Pattern(regexp = "^[A-Z0-9]{30}$")
     @Column(name="account_number", unique = true, nullable = false, length = 30, updatable = false)
     private String accountNumber;
 
-    @DecimalMin(value = "0.00")
-    @Column(name = "balance", nullable = false, precision = 15, scale = 2, insertable = false)
+    @Column(name = "account_balance", nullable = false, precision = 15, scale = 2, insertable = false)
     @Generated(event = EventType.INSERT)
-    private BigDecimal balance;
+    private BigDecimal accountBalance;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 10, insertable = false)
@@ -44,6 +42,12 @@ public class BankAccount extends BaseEntity {
         this.accountNumber = accountNumber;
     }
 
+    public BankAccount(PlayerCharacter playerCharacter, String accountNumber, BigDecimal accountBalance) {
+        this.playerCharacter = playerCharacter;
+        this.accountNumber = accountNumber;
+        this.accountBalance = accountBalance;
+    }
+
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -53,7 +57,7 @@ public class BankAccount extends BaseEntity {
     }
 
     public BigDecimal getBalance() {
-        return balance;
+        return accountBalance;
     }
 
     public StatusAccount getStatus() {
@@ -65,7 +69,7 @@ public class BankAccount extends BaseEntity {
     }
 
     public void setBalance(BigDecimal balance) {
-        this.balance = balance;
+        this.accountBalance = balance;
     }
 
 }

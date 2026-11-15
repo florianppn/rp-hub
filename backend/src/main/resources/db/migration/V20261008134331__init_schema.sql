@@ -4,7 +4,7 @@ CREATE TABLE users (
     public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     username VARCHAR(25) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    email_address VARCHAR(255) NOT NULL UNIQUE,
+    email_address VARCHAR(255) NOT NULL UNIQUE CHECK (email_address ~* '^[A-Z0-9._+-]+@[A-Z0-9-]+(\.[A-Z0-9-]+)*\.[A-Z]{2,}$'),
     role VARCHAR(25) NOT NULL DEFAULT 'PLAYER' CHECK (role IN ('PLAYER', 'MODERATOR', 'ADMIN')),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -40,8 +40,8 @@ CREATE TABLE bank_accounts (
     character_id BIGINT NOT NULL REFERENCES characters(id) ON DELETE RESTRICT,
 
     public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
-    account_number VARCHAR(30) NOT NULL UNIQUE CHECK (account_number ~ '^[A-Z0-9]{30}$'),
-    balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00 CHECK (balance >= 0.00),
+    account_number VARCHAR(16) NOT NULL UNIQUE CHECK (account_number ~ '^[A-Z]{2}-[0-9]{6}-[0-9]{6}$'),
+    account_balance NUMERIC(14, 2) NOT NULL DEFAULT 0.00 CHECK (account_balance >= 0.00),
     status  VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'FROZEN', 'CLOSED')),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
