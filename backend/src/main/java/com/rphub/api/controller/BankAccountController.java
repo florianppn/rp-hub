@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/bank-account")
+@RequestMapping("/api/bank-accounts")
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
