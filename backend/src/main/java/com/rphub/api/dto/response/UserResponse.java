@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record UserResponse(
-        UUID publicId,
         String username,
         String emailAddress,
         Instant createdAt,

@@ -58,7 +58,7 @@ public class BankAccountPersistenceTest extends AbstractPostgresTest {
                 ,"JDF639KMZ349POF129DKNF53649SQM");
         em.flush();
         assertThatThrownBy(() -> {
-            bankAccount.setBalance(new BigDecimal("123456789012398043.45"));
+            bankAccount.setAccountBalance(new BigDecimal("123456789012398043.45"));
             em.flush();
         }).isInstanceOf(DataException.class);
     }

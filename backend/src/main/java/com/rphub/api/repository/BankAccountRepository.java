@@ -11,6 +11,8 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
 
     Optional<BankAccount> findByPublicId(UUID publicId);
 
+    Optional<BankAccount> findByAccountNumber(String accountNumber);
+
     boolean existsByPlayerCharacter(PlayerCharacter playerCharacter);
 
     Long deleteByPublicId(UUID publicId);

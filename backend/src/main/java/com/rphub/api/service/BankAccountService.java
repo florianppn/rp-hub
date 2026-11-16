@@ -56,7 +56,7 @@ public class BankAccountService {
                         "Personnage non trouvé avec l'ID : " +
                         request.playerCharacterPublicId()
                 ));
-        if(!bankAccountRepository.existsByPlayerCharacter(playerCharacter)) {
+        if(bankAccountRepository.existsByPlayerCharacter(playerCharacter)) {
             throw new ConflictException(
                     "Un compte bancaire est déjà associé à " +
                     playerCharacter.getFirstName() + " " +

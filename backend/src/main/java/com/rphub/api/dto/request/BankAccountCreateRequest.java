@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public record BankAccountCreateRequest(
         @NotNull UUID playerCharacterPublicId,
-        @NotNull @Positive @Digits(integer=12, fraction=2) BigDecimal accountBalance
+        @NotNull @Positive @Digits(integer=13, fraction=2) BigDecimal accountBalance
 ) {}

@@ -11,7 +11,6 @@ public class PlayerCharacterMapper {
 
     public PlayerCharacterResponse toResponse(PlayerCharacter playerCharacter) {
         return new PlayerCharacterResponse(
-                playerCharacter.getPublicId(),
                 playerCharacter.getFirstName(),
                 playerCharacter.getLastName(),
                 playerCharacter.getDateOfBirth(),

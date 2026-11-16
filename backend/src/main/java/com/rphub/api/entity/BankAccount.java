@@ -1,7 +1,7 @@
 package com.rphub.api.entity;
 
 import com.rphub.api.enums.StatusAccount;
-import jakarta.validation.constraints.DecimalMin;
+import com.rphub.api.exception.BankingException;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -10,7 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.Generated;
 import org.hibernate.generator.EventType;
 import java.math.BigDecimal;
@@ -68,8 +67,24 @@ public class BankAccount extends BaseEntity {
         this.status = status;
     }
 
-    public void setBalance(BigDecimal balance) {
-        this.accountBalance = balance;
+    public void setAccountBalance(BigDecimal accountBalance) {
+        this.accountBalance = accountBalance;
+    }
+
+    public void debit(BigDecimal amount) {
+        if(accountBalance.compareTo(amount) >= 0) {
+            accountBalance = accountBalance.subtract(amount);
+        } else {
+            throw new BankingException("solde insuffisant");
+        }
+    }
+
+    public void credit(BigDecimal amount) {
+        if(amount.compareTo(BigDecimal.ZERO) > 0) {
+            accountBalance = accountBalance.add(amount);
+        } else {
+            throw new BankingException("montant invalide");
+        }
     }
 
 }

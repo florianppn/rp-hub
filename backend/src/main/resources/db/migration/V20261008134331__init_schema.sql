@@ -21,9 +21,9 @@ CREATE TABLE characters (
     first_name VARCHAR(20) NOT NULL CHECK (char_length(first_name) >= 2 AND char_length(first_name) <= 20),
     last_name VARCHAR(20) NOT NULL CHECK (char_length(first_name) >= 2 AND char_length(first_name) <= 20),
     date_of_birth DATE NOT NULL CHECK (date_of_birth <= CURRENT_DATE - INTERVAL '18 years' AND date_of_birth >= CURRENT_DATE - INTERVAL '100 years'),
-    gender VARCHAR(10) NOT NULL CHECK (gender IN ('MALE', 'FEMALE')),
+    gender VARCHAR(15) NOT NULL CHECK (gender IN ('MALE', 'FEMALE')),
     height INT NOT NULL CHECK (height >= 140 AND height <= 220),
-    status VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'DECEASED', 'ARCHIVED')),
+    status VARCHAR(15) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'DECEASED', 'ARCHIVED')),
     has_staff_tools BOOLEAN NOT NULL DEFAULT FALSE,
 
     CONSTRAINT uk_characters_first_name_last_name UNIQUE (first_name, last_name),
@@ -41,8 +41,8 @@ CREATE TABLE bank_accounts (
 
     public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     account_number VARCHAR(16) NOT NULL UNIQUE CHECK (account_number ~ '^[A-Z]{2}-[0-9]{6}-[0-9]{6}$'),
-    account_balance NUMERIC(14, 2) NOT NULL DEFAULT 0.00 CHECK (account_balance >= 0.00),
-    status  VARCHAR(10) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'FROZEN', 'CLOSED')),
+    account_balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00 CHECK (account_balance >= 0.00),
+    status  VARCHAR(15) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'FROZEN', 'CLOSED')),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -57,8 +57,8 @@ CREATE TABLE transactions (
     target_account_id BIGINT REFERENCES bank_accounts(id) ON DELETE RESTRICT,
 
     public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
-    type_transaction VARCHAR(10) NOT NULL CHECK (type_transaction IN ('TRANSFER', 'PAYMENT', 'WITHDRAWAL', 'DEPOSIT')),
-    category_transaction VARCHAR(10) NOT NULL CHECK (category_transaction IN ('SALARY', 'HOUSING', 'HEALTH', 'GROCERIES', 'VEHICLE', 'LEGAL', 'BUSINESS', 'TAX')),
+    type_transaction VARCHAR(15) NOT NULL CHECK (type_transaction IN ('TRANSFER', 'PAYMENT', 'WITHDRAWAL', 'DEPOSIT')),
+    category_transaction VARCHAR(15) NOT NULL CHECK (category_transaction IN ('SALARY', 'HOUSING', 'HEALTH', 'GROCERIES', 'VEHICLE', 'LEGAL', 'BUSINESS', 'TAX')),
     amount NUMERIC(15, 2) NOT NULL CHECK (amount >= 0.00),
 
     CONSTRAINT chk_transaction_accounts CHECK (

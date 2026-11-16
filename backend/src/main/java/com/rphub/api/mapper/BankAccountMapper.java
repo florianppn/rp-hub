@@ -9,11 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class BankAccountMapper {
 
-
-
     public BankAccountResponse toResponse(BankAccount bankAccount) {
         return new BankAccountResponse(
-                bankAccount.getPublicId(),
                 bankAccount.getAccountNumber(),
                 bankAccount.getBalance(),
                 bankAccount.getStatus()

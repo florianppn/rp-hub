@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record BankAccountResponse(
-    UUID publicId,
     String accountNumber,
     BigDecimal balance,
     StatusAccount status

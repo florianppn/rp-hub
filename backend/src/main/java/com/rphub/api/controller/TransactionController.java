@@ -1,0 +1,70 @@
+package com.rphub.api.controller;
+
+import com.rphub.api.dto.request.DepositCreateRequest;
+import com.rphub.api.dto.request.TransferCreateRequest;
+import com.rphub.api.dto.request.WithdrawalCreateRequest;
+import com.rphub.api.dto.response.TransactionResponse;
+import com.rphub.api.service.TransactionService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/transaction")
+public class TransactionController {
+
+    private final TransactionService transactionService;
+
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
+
+    @GetMapping
+    public Page<TransactionResponse> getAll(Pageable pageable) {
+        return transactionService.readAll(pageable);
+    }
+
+    @GetMapping("/{publicId}")
+    public TransactionResponse get(
+        @PathVariable UUID publicId
+    ) {
+        return transactionService.read(publicId);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TransactionResponse postTransfer(
+        @Valid @RequestBody TransferCreateRequest request
+    ) {
+        return transactionService.createTransfer(request);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TransactionResponse postPayment(
+        @Valid @RequestBody TransferCreateRequest request
+    ) {
+        return transactionService.createTransfer(request);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TransactionResponse postWithdrawal(
+        @Valid @RequestBody WithdrawalCreateRequest request
+    ) {
+        return transactionService.createWithdrawal(request);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TransactionResponse postDeposit(
+        @Valid @RequestBody DepositCreateRequest request
+    ) {
+        return transactionService.createDeposit(request);
+    }
+
+}

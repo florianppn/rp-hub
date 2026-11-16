@@ -35,30 +35,68 @@ public class Transaction extends BaseEntity {
 
     @DecimalMin(value = "0.01")
     @Column(name = "amount", nullable = false, precision = 15, scale = 2, updatable = false)
-    private BigDecimal amout;
+    private BigDecimal amount;
 
     protected Transaction() {} // pour Hybernate
 
     public Transaction(
             BankAccount sourceAccount,
-            BigDecimal amout,
+            BankAccount targetAccount,
+            BigDecimal amount,
             CategoryTransaction categoryTransaction,
-            TypeTransaction typeTransaction,
-            BankAccount targetAccount
+            TypeTransaction typeTransaction
     ) {
         this.sourceAccount = sourceAccount;
-        this.amout = amout;
+        this.targetAccount = targetAccount;
+        this.amount = amount;
         this.categoryTransaction = categoryTransaction;
         this.typeTransaction = typeTransaction;
-        this.targetAccount = targetAccount;
+    }
+
+    public static Transaction transfer(
+            BankAccount source,
+            BankAccount target,
+            BigDecimal amount,
+            CategoryTransaction category
+    ) {
+        return new Transaction(source, target, amount, category, TypeTransaction.TRANSFER);
+    }
+
+    public static Transaction payment(
+            BankAccount source,
+            BankAccount target,
+            BigDecimal amount,
+            CategoryTransaction category
+    ) {
+        return new Transaction(source, target, amount, category, TypeTransaction.PAYMENT);
+    }
+
+    public static Transaction withdrawal(
+            BankAccount source,
+            BigDecimal amount,
+            CategoryTransaction category
+    ) {
+        return new Transaction(source, null, amount, category, TypeTransaction.WITHDRAWAL);
+    }
+
+    public static Transaction deposit(
+            BankAccount target,
+            BigDecimal amount,
+            CategoryTransaction category
+    ) {
+        return new Transaction(null, target, amount, category, TypeTransaction.DEPOSIT);
     }
 
     public BankAccount getSourceAccount() {
         return sourceAccount;
     }
 
-    public BigDecimal getAmout() {
-        return amout;
+    public BankAccount getTargetAccount() {
+        return targetAccount;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
     }
 
     public CategoryTransaction getCategoryTransaction() {
@@ -67,10 +105,6 @@ public class Transaction extends BaseEntity {
 
     public TypeTransaction getTypeTransaction() {
         return typeTransaction;
-    }
-
-    public BankAccount getTargetAccount() {
-        return targetAccount;
     }
 
 }
