@@ -1,7 +1,7 @@
 package com.rphub.api.controller;
 
 import com.rphub.api.dto.request.DepositCreateRequest;
-import com.rphub.api.dto.request.TransferCreateRequest;
+import com.rphub.api.dto.request.PaymentCreateRequest;
 import com.rphub.api.dto.request.WithdrawalCreateRequest;
 import com.rphub.api.dto.response.TransactionResponse;
 import com.rphub.api.service.TransactionService;
@@ -35,23 +35,15 @@ public class TransactionController {
         return transactionService.read(publicId);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public TransactionResponse postTransfer(
-        @Valid @RequestBody TransferCreateRequest request
-    ) {
-        return transactionService.createTransfer(request);
-    }
-
-    @PostMapping
+    @PostMapping("/payment")
     @ResponseStatus(HttpStatus.CREATED)
     public TransactionResponse postPayment(
-        @Valid @RequestBody TransferCreateRequest request
+        @Valid @RequestBody PaymentCreateRequest request
     ) {
-        return transactionService.createTransfer(request);
+        return transactionService.createPayment(request);
     }
 
-    @PostMapping
+    @PostMapping("withdrawal")
     @ResponseStatus(HttpStatus.CREATED)
     public TransactionResponse postWithdrawal(
         @Valid @RequestBody WithdrawalCreateRequest request
@@ -59,7 +51,7 @@ public class TransactionController {
         return transactionService.createWithdrawal(request);
     }
 
-    @PostMapping
+    @PostMapping("deposit")
     @ResponseStatus(HttpStatus.CREATED)
     public TransactionResponse postDeposit(
         @Valid @RequestBody DepositCreateRequest request

@@ -1,7 +1,6 @@
 package com.rphub.api.dto.request;
 
 import com.rphub.api.enums.CategoryTransaction;
-import com.rphub.api.enums.TypeTransaction;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +8,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
-public record TransferCreateRequest(
+public record PaymentCreateRequest(
         @NotBlank String accountNumberSource,
         @NotBlank String accountNumberTarget,
         @NotNull @Positive @Digits(integer=13, fraction=2) BigDecimal amount,

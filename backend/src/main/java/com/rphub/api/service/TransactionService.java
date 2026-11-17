@@ -1,7 +1,7 @@
 package com.rphub.api.service;
 
 import com.rphub.api.dto.request.DepositCreateRequest;
-import com.rphub.api.dto.request.TransferCreateRequest;
+import com.rphub.api.dto.request.PaymentCreateRequest;
 import com.rphub.api.dto.request.WithdrawalCreateRequest;
 import com.rphub.api.dto.response.TransactionResponse;
 import com.rphub.api.entity.BankAccount;
@@ -47,10 +47,10 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionResponse createTransfer(TransferCreateRequest request) {
+    public TransactionResponse createPayment(PaymentCreateRequest request) {
         BankAccount source = loadAccount(request.accountNumberSource());
         BankAccount target = loadAccount(request.accountNumberTarget());
-        Transaction tx = Transaction.transfer(source, target, request.amount(), request.category());
+        Transaction tx = Transaction.payment(source, target, request.amount(), request.category());
         source.debit(request.amount());
         target.credit(request.amount());
         return transactionMapper.toResponse(transactionRepository.save(tx));

@@ -53,15 +53,6 @@ public class Transaction extends BaseEntity {
         this.typeTransaction = typeTransaction;
     }
 
-    public static Transaction transfer(
-            BankAccount source,
-            BankAccount target,
-            BigDecimal amount,
-            CategoryTransaction category
-    ) {
-        return new Transaction(source, target, amount, category, TypeTransaction.TRANSFER);
-    }
-
     public static Transaction payment(
             BankAccount source,
             BankAccount target,
