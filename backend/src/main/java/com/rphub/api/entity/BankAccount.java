@@ -1,6 +1,7 @@
 package com.rphub.api.entity;
 
 import com.rphub.api.enums.StatusAccount;
+import com.rphub.api.enums.TypeAccount;
 import com.rphub.api.exception.BankingException;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
@@ -30,15 +31,24 @@ public class BankAccount extends BaseEntity {
     private BigDecimal accountBalance;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 10, insertable = false)
+    @Column(name = "status", nullable = false, length = 15, insertable = false)
     @Generated(event = EventType.INSERT)
     private StatusAccount status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_account", nullable = false, length = 15, updatable = false)
+    private TypeAccount typeAccount;
+
     protected BankAccount() {} // pour Hybernate
 
-    public BankAccount(PlayerCharacter playerCharacter, String accountNumber) {
+    public BankAccount(
+            PlayerCharacter playerCharacter,
+            String accountNumber,
+            TypeAccount typeAccount
+    ) {
         this.playerCharacter = playerCharacter;
         this.accountNumber = accountNumber;
+        this.typeAccount = typeAccount;
     }
 
     public BankAccount(PlayerCharacter playerCharacter, String accountNumber, BigDecimal accountBalance) {
@@ -62,6 +72,8 @@ public class BankAccount extends BaseEntity {
     public StatusAccount getStatus() {
         return status;
     }
+
+    public TypeAccount getTypeAccount() { return typeAccount; }
 
     public void setStatus(StatusAccount status) {
         this.status = status;

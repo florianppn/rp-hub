@@ -43,6 +43,7 @@ CREATE TABLE bank_accounts (
     account_number VARCHAR(16) NOT NULL UNIQUE CHECK (account_number ~ '^[A-Z]{2}-[0-9]{6}-[0-9]{6}$'),
     account_balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00 CHECK (account_balance >= 0.00),
     status  VARCHAR(15) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'FROZEN', 'CLOSED')),
+    type_account VARCHAR(15) NOT NULL CHECK(type_account IN('INDIVIDUAL', 'BUSINESS')),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -57,12 +58,11 @@ CREATE TABLE transactions (
     target_account_id BIGINT REFERENCES bank_accounts(id) ON DELETE RESTRICT,
 
     public_id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
-    type_transaction VARCHAR(15) NOT NULL CHECK (type_transaction IN ('TRANSFER', 'PAYMENT', 'WITHDRAWAL', 'DEPOSIT')),
+    type_transaction VARCHAR(15) NOT NULL CHECK (type_transaction IN ('PAYMENT', 'WITHDRAWAL', 'DEPOSIT')),
     category_transaction VARCHAR(15) NOT NULL CHECK (category_transaction IN ('SALARY', 'HOUSING', 'HEALTH', 'GROCERIES', 'VEHICLE', 'LEGAL', 'BUSINESS', 'TAX')),
     amount NUMERIC(15, 2) NOT NULL CHECK (amount >= 0.00),
 
     CONSTRAINT chk_transaction_accounts CHECK (
-        (type_transaction = 'TRANSFER' AND source_account_id IS NOT NULL AND target_account_id IS NOT NULL) OR
         (type_transaction = 'PAYMENT' AND source_account_id IS NOT NULL AND target_account_id IS NOT NULL) OR
         (type_transaction = 'WITHDRAWAL' AND source_account_id IS NOT NULL AND target_account_id IS NULL) OR
         (type_transaction = 'DEPOSIT' AND source_account_id IS NULL AND target_account_id IS NOT NULL)

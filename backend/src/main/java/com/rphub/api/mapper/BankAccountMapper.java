@@ -13,7 +13,8 @@ public class BankAccountMapper {
         return new BankAccountResponse(
                 bankAccount.getAccountNumber(),
                 bankAccount.getBalance(),
-                bankAccount.getStatus()
+                bankAccount.getStatus(),
+                bankAccount.getTypeAccount()
         );
     }
 

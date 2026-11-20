@@ -41,8 +41,7 @@ public class UserService {
 
     @Transactional(readOnly=true)
     public UserResponse read(UUID publicId) {
-        User user = userRepository.findByPublicId(publicId)
-                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + publicId));
+        User user = loadUser(publicId);
         return userMapper.toResponse(user);
     }
 
@@ -68,8 +67,7 @@ public class UserService {
 
     @Transactional
     public void updatePassword(UUID publicId, PasswordUpdateRequest request) {
-        User user = userRepository.findByPublicId(publicId)
-                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + publicId));
+        User user = loadUser(publicId);
         if(!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             throw new ConflictException("Mot de passe incorrect");
         }
@@ -78,13 +76,17 @@ public class UserService {
 
     @Transactional
     public UserResponse updateEmailAddress(UUID publicId, EmailUpdateRequest request) {
-        User user = userRepository.findByPublicId(publicId)
-                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + publicId));
+        User user = loadUser(publicId);
         if(!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             throw new ConflictException("Mot de passe incorrect");
         }
         user.setEmailAddress(request.newEmailAddress());
         return userMapper.toResponse(user);
+    }
+
+    private User loadUser(UUID publicId) {
+        return userRepository.findByPublicId(publicId)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + publicId));
     }
 
 }
